@@ -16,4 +16,7 @@ class FileMetaData(object):
         return self.date
 
     def setDesc(self, desc):
-        self.description = desc
+        self.desc = desc
+
+    def getDesc(self):
+        return self.desc
