@@ -1,7 +1,7 @@
 var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
-var event      = require('./app/models/events.js');
+var Event      = require('./app/models/events.js');
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +16,9 @@ mongoose.connect('mongodb://localhost:27017/sequoia-db1');
 
 var port = process.env.PORT || 3000; 		// set our port
 var aws_server = process.env.AWS_SERVER || "http://ec2-54-69-15-160.us-west-2.compute.amazonaws.com";
+var ev = new Event();
+var m_ev = mongoose.model('Event');
+
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router(); 				// get an instance of the express Router
@@ -27,11 +30,24 @@ router.get('/', function(req, res) {
 });
 
 router.get('/event', function(req, res){
+  res.json(JSON.stringify(m_ev.find({})));	
 	res.json({ date:"some date", url: "some url", desc:" some description"});
 });
 
-router.post('event', function(req, res){
-		
+router.post('/event', function(req, res){
+	// create a new events model
+	//var ev = new Event();
+	ev.bucket_name = req.body.bucket_name;
+	ev.key_name    = req.body.key_name;
+	ev.date        = req.body.date;
+	ev.desc        = req.body.desc;
+	ev.save(function(err) {
+		if (err) res.send(err);
+				console.log("Event was written: "+JSON.stringify(ev));
+				res.writeHead(200, {'content-type':'text/html'});
+				res.end();
+			  //res.json({ message: 'Event created!' });
+		});
 });
 
 
