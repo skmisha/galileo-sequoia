@@ -43,7 +43,7 @@ router.get('/event', function(req, res){
 });
 
 router.post('/event', function(req, res){
-	//var ev = new Event();
+	var ev = new Event();
 	ev.bucket_name = req.body.bucket_name;
 	ev.key_name    = req.body.key_name;
 	ev.date        = req.body.date;
