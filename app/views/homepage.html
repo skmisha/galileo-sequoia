@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html ng-app="eventsApp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+	</head>
+	<body>
+		<!-- Meetups View -->
+		<div ng-controller="eventsController">
+			<h1> There are {{events.length}} events</h1>
+			<ul>
+				<li ng-repeat="event in events">
+					{{event.date}}, {{event.desc}}
+				</li>
+			</ul>
+		</div>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.js"></script>
+		<script type="text/javascript" src="/app/app.js"></script>
+		<script type="text/javascript" src="/app/controllers/events-controller.js"></script>
+	</body>
+</html>

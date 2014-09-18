@@ -19,23 +19,30 @@ var aws_server = process.env.AWS_SERVER || "http://ec2-54-69-15-160.us-west-2.co
 var ev = new Event();
 var m_ev = mongoose.model('Event');
 
+app.use('/app', express.static(__dirname+'/app'));
+
 // ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router(); 				// get an instance of the express Router
 
+app.get('/', function(req, res) {
+	res.sendFile(__dirname +'/app/views/homepage.html');
+});
+
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
 	// TODO: set page with description of api
-	res.json({ message: 'hooray! welcome to Sequoia group api!' });	
+	res.sendFile(__dirname +'/app/views/listofapi.html');
+	//res.json({ message: 'hooray! welcome to Sequoia group api!' });	
 });
 
 router.get('/event', function(req, res){
-  res.json(JSON.stringify(m_ev.find({})));	
-	res.json({ date:"some date", url: "some url", desc:" some description"});
+  m_ev.find({}, function(err, results){
+		res.json(results);		
+	});
 });
 
 router.post('/event', function(req, res){
-	// create a new events model
 	//var ev = new Event();
 	ev.bucket_name = req.body.bucket_name;
 	ev.key_name    = req.body.key_name;
@@ -46,13 +53,8 @@ router.post('/event', function(req, res){
 				console.log("Event was written: "+JSON.stringify(ev));
 				res.writeHead(200, {'content-type':'text/html'});
 				res.end();
-			  //res.json({ message: 'Event created!' });
 		});
 });
-
-
-
-// more routes for our API will happen here
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
