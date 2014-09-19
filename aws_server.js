@@ -11,7 +11,18 @@ app.use(bodyParser.json());
 // ===========================================================================
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/sequoia-db1'); 
+mongoose.connect('mongodb://localhost:27017/sequoia-db1');
+
+var mean = require('meanio');
+
+// Creates and serves mean application
+mean.serve({ /*options placeholder*/ }, function(app, config) {
+    var port = config.https && config.https.port ? config.https.port : config.http.port;
+    console.log('Mean app started on port ' + port + ' (' + process.env.NODE_ENV + ')');
+});
+
+
+
 
 
 var port = process.env.PORT || 3000; 		// set our port
